@@ -191,3 +191,5 @@ For demo, show:
 - Saved checkpoints for trained models.
 - This README and `DEMO_STEPS_CN.md`.
 - GitHub commit history.
+
+See `docs/GITHUB_PUSH_CN.md` for the exact commands to create and push the GitHub repository.

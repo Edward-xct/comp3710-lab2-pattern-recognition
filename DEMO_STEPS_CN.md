@@ -229,3 +229,5 @@ git log --oneline -5
 3. README 说明了怎么运行。
 4. commit message 有意义。
 5. AI 使用记录在 `AI_USAGE_LOG.md`。
+
+如果还没有推到 GitHub，看 `docs/GITHUB_PUSH_CN.md`。
