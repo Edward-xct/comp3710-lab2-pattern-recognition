@@ -72,6 +72,7 @@ Eds/Blackboard 更新信息说：原 PDF 的 OASIS 链接可能失效，新的 A
 本项目 SLURM 会自动尝试寻找：
 
 ```text
+/home/groups/comp3710/OASIS
 /home/groups/comp3710/keras_png_slices_data
 /home/groups/comp3710/keras_png_slices_data.zip
 data/keras_png_slices_data

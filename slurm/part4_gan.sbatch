@@ -21,6 +21,7 @@ fi
 DATA_PATH=${DATA_PATH:-}
 if [ -z "$DATA_PATH" ]; then
   for candidate in \
+    /home/groups/comp3710/OASIS \
     /home/groups/comp3710/keras_png_slices_data \
     /home/groups/comp3710/keras_png_slices_data.zip \
     "$SLURM_SUBMIT_DIR/data/keras_png_slices_data" \

@@ -148,9 +148,9 @@ python scripts/part3_cifar_resnet18.py --download --epochs 80 --batch-size 512 -
 Part 4 on a GPU:
 
 ```bash
-python scripts/part4_vae.py --data /home/groups/comp3710/keras_png_slices_data
-python scripts/part4_unet.py --data /home/groups/comp3710/keras_png_slices_data
-python scripts/part4_gan.py --data /home/groups/comp3710/keras_png_slices_data
+python scripts/part4_vae.py --data /home/groups/comp3710/OASIS
+python scripts/part4_unet.py --data /home/groups/comp3710/OASIS
+python scripts/part4_gan.py --data /home/groups/comp3710/OASIS
 ```
 
 ## Rangpur SLURM
