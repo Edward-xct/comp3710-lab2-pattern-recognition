@@ -65,16 +65,30 @@ Lab sheet 说 OASIS 数据在：
 /home/groups/comp3710/
 ```
 
-本项目 SLURM 默认使用：
+Eds/Blackboard 更新信息说：原 PDF 的 OASIS 链接可能失效，新的 AARNet FileSender 链接在 Blackboard 的 Demo 2 folder 里；同时数据已经在 Rangpur 上可用。
+
+不要把带 token 的 FileSender URL 提交到公开 GitHub 仓库。
+
+本项目 SLURM 会自动尝试寻找：
 
 ```text
 /home/groups/comp3710/keras_png_slices_data
+/home/groups/comp3710/keras_png_slices_data.zip
+data/keras_png_slices_data
+data/keras_png_slices_data.zip
 ```
 
 如果实际路径不同，可以提交时覆盖：
 
 ```bash
 DATA_PATH=/actual/path/to/keras_png_slices_data sbatch slurm/part4_unet.sbatch
+```
+
+如果不确定 Rangpur 上具体目录名：
+
+```bash
+ls -la /home/groups/comp3710
+find /home/groups/comp3710 -maxdepth 2 \( -iname "*keras*png*" -o -iname "*oasis*" \)
 ```
 
 ## Demo 时可以怎么做

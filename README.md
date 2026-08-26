@@ -53,6 +53,10 @@ On Rangpur, use the Python/CUDA module recommended by the course, create a venv 
 
 ## OASIS Data
 
+The PDF link may be stale. The course staff posted an updated AARNet FileSender link in the Blackboard Demo 2 folder, and noted that the data is already available on Rangpur.
+
+Do not commit tokenized FileSender links to a public GitHub repository.
+
 The downloaded archive is:
 
 ```text

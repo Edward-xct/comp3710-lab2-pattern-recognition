@@ -4,6 +4,8 @@
 
 这个项目用 PyTorch 完成 Lab 2。代码分成本地快速检查和 Rangpur GPU 正式训练两种模式。
 
+Eds/Blackboard 上 staff 说 PDF 里的 OASIS 链接可能失效，更新链接在 Blackboard Demo 2 folder；数据已经在 Rangpur 上可用。所以正式训练优先用 Rangpur 的 `/home/groups/comp3710/` 数据，不需要把 FileSender token 写进 GitHub。
+
 本地主要用于：
 
 - 检查代码能不能 import。
