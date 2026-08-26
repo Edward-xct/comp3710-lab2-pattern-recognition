@@ -47,6 +47,18 @@ def parse_args():
         help="Optional subdirectory name for preserving separate experiment runs.",
     )
     parser.add_argument(
+        "--stage-index",
+        type=int,
+        default=None,
+        help="Optional numeric stage for ordering ablation results in summaries.",
+    )
+    parser.add_argument(
+        "--stage-note",
+        type=str,
+        default="",
+        help="Short note describing the change tested in this experiment.",
+    )
+    parser.add_argument(
         "--no-augment",
         action="store_true",
         help="Disable CIFAR10 random crop, flip, and random erasing for baseline runs.",
@@ -276,6 +288,8 @@ def main() -> None:
             "epochs": int(args.epochs),
             "batch_size": int(args.batch_size),
             "experiment_name": args.experiment_name or "default",
+            "stage_index": args.stage_index,
+            "stage_note": args.stage_note,
             "synthetic": bool(args.synthetic),
             "amp": use_amp,
             "channels_last": bool(args.channels_last),

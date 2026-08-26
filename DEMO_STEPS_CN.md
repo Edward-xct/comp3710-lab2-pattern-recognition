@@ -102,10 +102,10 @@ sbatch slurm/part3_cifar_resnet18.sbatch
 如果 demonstrator 要求看到真实的逐步改进过程，优先提交 ablation 版本：
 
 ```bash
-sbatch slurm/part3_cifar_ablation.sbatch
+sbatch slurm/part3_cifar_ablation_detailed.sbatch
 ```
 
-这个脚本会依次跑 `baseline_no_aug`、`add_aug_cosine`、`regularized`、`final_amp_channels_last` 四轮实验，并把每轮结果保存在不同目录。跑完后可以展示：
+这个脚本会依次跑 7 轮实验，从弱 baseline 到最终 AMP 版本，每一轮只改变一两个因素，并把每轮结果保存在不同目录。跑完后可以展示：
 
 ```bash
 cat outputs/part3_cifar_resnet18/part3_cifar_experiment_summary.md

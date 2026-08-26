@@ -11,10 +11,10 @@
 
 ## 推荐实验路径
 
-用下面这个脚本一次提交，内部会连续跑 4 个真实阶段：
+用下面这个详细脚本一次提交，内部会连续跑 7 个真实阶段：
 
 ```bash
-sbatch slurm/part3_cifar_ablation.sbatch
+sbatch slurm/part3_cifar_ablation_detailed.sbatch
 ```
 
 查看队列：
@@ -26,32 +26,50 @@ squeue -u s4985908
 查看日志：
 
 ```bash
-tail -f slurm-cifar-ablation-<jobid>.out
+tail -f slurm-cifar-detail-<jobid>.out
 ```
 
 如果想退出 `tail -f`，按 `Ctrl+C`，训练任务不会被取消。
 
-## 四个阶段怎么讲
+## 七个阶段怎么讲
 
-Stage 1: `baseline_no_aug`
+Stage 1: `s01_tiny_baseline`
 
-- 改动：小一点的 ResNet width=32，不使用 augmentation，不使用 scheduler。
-- 目的：建立 baseline，通常 accuracy 不会特别高。
+- 改动：小一点的 ResNet width=32，只训练 10 epochs，不使用 augmentation，不使用 scheduler。
+- 目的：建立弱 baseline，证明一开始不是直接高分。
 - 讲法：先确认模型、数据加载、训练循环都是真的在 CIFAR10 上跑。
 
-Stage 2: `add_aug_cosine`
+Stage 2: `s02_longer_baseline`
 
-- 改动：width=64，加入 random crop 和 horizontal flip，使用 cosine learning rate。
+- 改动：同样的小模型和无 augmentation，但训练从 10 epochs 增加到 20 epochs。
+- 目的：展示单纯训练更久会提升一些，但还不够。
+- 讲法：epoch 数增加能让模型继续拟合训练集，但泛化提升有限。
+
+Stage 3: `s03_wider_no_aug`
+
+- 改动：把 width 从 32 增加到 64，仍然不使用 augmentation。
+- 目的：测试增加模型容量的效果。
+- 讲法：模型更宽可以学到更多特征，但没有 augmentation 时仍容易泛化不足。
+
+Stage 4: `s04_add_crop_flip`
+
+- 改动：加入 random crop 和 horizontal flip，暂时不加 random erasing 或 label smoothing。
 - 目的：让模型泛化更好，减少过拟合，学习率后期逐渐变小。
-- 讲法：augmentation 让模型看到更多图像变化，cosine scheduler 让训练后期更稳定。
+- 讲法：augmentation 让模型看到更多图像变化，通常是 CIFAR10 accuracy 跨上一个台阶的关键。
 
-Stage 3: `regularized`
+Stage 5: `s05_add_cosine_lr`
+
+- 改动：保留 crop/flip augmentation，加入 cosine learning rate decay。
+- 目的：让训练后期更稳定收敛。
+- 讲法：一开始较大学习率探索参数，后期学习率下降来细调。
+
+Stage 6: `s06_regularized`
 
 - 改动：加入 label smoothing 和 random erasing。
 - 目的：继续提升泛化能力，让模型不要对训练标签过度自信。
 - 讲法：label smoothing 改善 calibration，random erasing 模拟遮挡，减少 memorisation。
 
-Stage 4: `final_amp_channels_last`
+Stage 7: `s07_final_amp_channels_last`
 
 - 改动：保留前面最好的训练设置，加入 AMP mixed precision 和 channels-last memory format。
 - 目的：在 A100 上加速训练，满足 DAWNBench-style fast training 的要求。
