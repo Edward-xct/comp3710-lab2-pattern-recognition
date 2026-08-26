@@ -15,6 +15,18 @@ Rangpur 是学校的 HPC cluster。GPU 不是直接独占使用，而是通过 S
 
 ## 常用命令
 
+COMP3710 的 GPU partition 是：
+
+```text
+comp3710
+```
+
+GPU resource request 是：
+
+```text
+--gres=gpu:a100:1
+```
+
 查看当前队列：
 
 ```bash

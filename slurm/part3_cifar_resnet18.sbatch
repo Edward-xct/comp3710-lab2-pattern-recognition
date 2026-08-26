@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=comp3710-cifar
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --partition=comp3710
+#SBATCH --gres=gpu:a100:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=00:45:00

@@ -176,7 +176,7 @@ Watch a log:
 tail -f slurm-cifar-<jobid>.out
 ```
 
-If Rangpur uses a different GPU partition name or requires an account, edit the `#SBATCH` lines in `slurm/*.sbatch`.
+On Rangpur for COMP3710, these scripts use the `comp3710` partition and request one A100 GPU with `--gres=gpu:a100:1`.
 
 ## Outputs
 
