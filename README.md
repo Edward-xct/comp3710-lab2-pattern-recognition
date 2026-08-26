@@ -142,7 +142,7 @@ python scripts/part3_lfw_cnn.py --epochs 20
 Part 3.2 on a GPU:
 
 ```bash
-python scripts/part3_cifar_resnet18.py --download --epochs 80 --batch-size 512 --lr 0.4 --amp --channels-last
+python scripts/part3_cifar_resnet18.py --download --experiment-name final_amp_channels_last --epochs 80 --batch-size 512 --lr 0.4 --amp --channels-last
 ```
 
 Part 4 on a GPU:
@@ -159,6 +159,7 @@ Submit jobs from the project root:
 
 ```bash
 sbatch slurm/part3_cifar_resnet18.sbatch
+sbatch slurm/part3_cifar_ablation.sbatch
 sbatch slurm/part4_vae.sbatch
 sbatch slurm/part4_unet.sbatch
 sbatch slurm/part4_gan.sbatch
@@ -177,6 +178,8 @@ tail -f slurm-cifar-<jobid>.out
 ```
 
 On Rangpur for COMP3710, these scripts use the `comp3710` account/partition, request one A100 GPU with `--gres=gpu:a100:1`, and request a 12-hour wall time. The scripts do not set `--mem` because this partition rejected explicit memory requests during testing. The venv supplies Python/PyTorch, so the scripts avoid loading a separate CUDA module.
+
+For Part 3.2 demo evidence, `slurm/part3_cifar_ablation.sbatch` runs four real CIFAR10 experiments and preserves each run separately under `outputs/part3_cifar_resnet18/<experiment>`. It then writes `outputs/part3_cifar_resnet18/part3_cifar_experiment_summary.md`, which can be used to explain the improvement from baseline to the final AMP run.
 
 ## Outputs
 

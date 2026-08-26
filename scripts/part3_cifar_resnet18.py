@@ -40,6 +40,19 @@ def parse_args():
     parser.add_argument("--num-workers", type=int, default=8)
     parser.add_argument("--width", type=int, default=64)
     parser.add_argument("--label-smoothing", type=float, default=0.1)
+    parser.add_argument(
+        "--experiment-name",
+        type=str,
+        default=None,
+        help="Optional subdirectory name for preserving separate experiment runs.",
+    )
+    parser.add_argument(
+        "--no-augment",
+        action="store_true",
+        help="Disable CIFAR10 random crop, flip, and random erasing for baseline runs.",
+    )
+    parser.add_argument("--random-erasing-prob", type=float, default=0.25)
+    parser.add_argument("--scheduler", choices=["cosine", "step", "none"], default="cosine")
     parser.add_argument("--amp", action="store_true", help="Use CUDA automatic mixed precision.")
     parser.add_argument("--channels-last", action="store_true")
     parser.add_argument("--download", action="store_true")
@@ -68,15 +81,20 @@ def make_loaders(args):
             torch.randint(0, 10, (test_count,), generator=generator),
         )
     else:
-        train_transform = transforms.Compose(
-            [
+        if args.no_augment:
+            train_transform = transforms.Compose(
+                [transforms.ToTensor(), transforms.Normalize(CIFAR10_MEAN, CIFAR10_STD)]
+            )
+        else:
+            train_steps = [
                 transforms.RandomCrop(32, padding=4),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 transforms.Normalize(CIFAR10_MEAN, CIFAR10_STD),
-                transforms.RandomErasing(p=0.25),
             ]
-        )
+            if args.random_erasing_prob > 0.0:
+                train_steps.append(transforms.RandomErasing(p=args.random_erasing_prob))
+            train_transform = transforms.Compose(train_steps)
         test_transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize(CIFAR10_MEAN, CIFAR10_STD)]
         )
@@ -144,8 +162,11 @@ def main() -> None:
         args.num_workers = 0
         args.width = min(args.width, 16)
 
-    out = output_dir("part3_cifar_resnet18")
-    ckpt_dir = checkpoint_dir("part3_cifar_resnet18")
+    output_parts = ["part3_cifar_resnet18"]
+    if args.experiment_name:
+        output_parts.append(args.experiment_name)
+    out = output_dir(*output_parts)
+    ckpt_dir = checkpoint_dir(*output_parts)
     train_loader, test_loader = make_loaders(args)
     device = choose_device()
     use_amp = bool(args.amp and device.type == "cuda")
@@ -159,6 +180,12 @@ def main() -> None:
 
     if args.eval_only:
         metrics = evaluate(model, test_loader, device, use_amp=use_amp)
+        metrics.update(
+            {
+                "experiment_name": args.experiment_name or "default",
+                "checkpoint": str(args.checkpoint) if args.checkpoint else None,
+            }
+        )
         write_json(out / "part3_cifar_eval_metrics.json", metrics)
         print(f"eval accuracy={metrics['accuracy']:.4f}, loss={metrics['loss']:.4f}")
         return
@@ -171,7 +198,15 @@ def main() -> None:
         weight_decay=args.weight_decay,
         nesterov=True,
     )
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
+    if args.scheduler == "cosine":
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
+    elif args.scheduler == "step":
+        milestones = sorted({max(1, args.epochs // 2), max(1, (3 * args.epochs) // 4)})
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(
+            optimizer, milestones=milestones, gamma=0.1
+        )
+    else:
+        scheduler = None
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
 
     history = []
@@ -198,7 +233,8 @@ def main() -> None:
             train_loss += loss.item() * targets.shape[0]
             correct += (logits.argmax(dim=1) == targets).sum().item()
             total += targets.numel()
-        scheduler.step()
+        if scheduler is not None:
+            scheduler.step()
         if device.type == "cuda":
             torch.cuda.synchronize()
         eval_metrics = evaluate(model, test_loader, device, use_amp=use_amp)
@@ -239,9 +275,19 @@ def main() -> None:
             "parameters": int(parameter_count(model)),
             "epochs": int(args.epochs),
             "batch_size": int(args.batch_size),
+            "experiment_name": args.experiment_name or "default",
             "synthetic": bool(args.synthetic),
             "amp": use_amp,
             "channels_last": bool(args.channels_last),
+            "augmentation": not bool(args.no_augment),
+            "random_erasing_prob": 0.0
+            if args.no_augment
+            else float(args.random_erasing_prob),
+            "scheduler": args.scheduler,
+            "learning_rate": float(args.lr),
+            "width": int(args.width),
+            "label_smoothing": float(args.label_smoothing),
+            "weight_decay": float(args.weight_decay),
             "seconds": float(total_seconds),
             "best_accuracy": float(best_acc),
             "final_accuracy": float(history[-1]["test_accuracy"]),

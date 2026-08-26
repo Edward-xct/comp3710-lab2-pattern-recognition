@@ -17,6 +17,7 @@ fi
 
 python scripts/part3_cifar_resnet18.py \
   --download \
+  --experiment-name final_amp_channels_last \
   --epochs 80 \
   --batch-size 512 \
   --lr 0.4 \

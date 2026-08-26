@@ -9,6 +9,7 @@ AI assistance was used for:
 - Implementing baseline scripts for DFT, Eigenfaces, CNN, ResNet-18, VAE, UNet, and GAN tasks.
 - Preparing SLURM scripts for GPU cluster execution.
 - Writing README and demo notes.
+- Adding a Part 3.2 CIFAR10 ablation workflow so real experiment logs can show how accuracy improves across configurations.
 
 Student responsibility:
 
