@@ -176,7 +176,7 @@ Watch a log:
 tail -f slurm-cifar-<jobid>.out
 ```
 
-On Rangpur for COMP3710, these scripts use the `comp3710` account/partition, request one A100 GPU with `--gres=gpu:a100:1`, and request a 12-hour wall time. The scripts do not set `--mem` because this partition rejected explicit memory requests during testing.
+On Rangpur for COMP3710, these scripts use the `comp3710` account/partition, request one A100 GPU with `--gres=gpu:a100:1`, and request a 12-hour wall time. The scripts do not set `--mem` because this partition rejected explicit memory requests during testing. The venv supplies Python/PyTorch, so the scripts avoid loading a separate CUDA module.
 
 ## Outputs
 

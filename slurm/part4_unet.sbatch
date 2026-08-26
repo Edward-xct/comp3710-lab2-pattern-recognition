@@ -11,9 +11,6 @@ set -euo pipefail
 
 cd "$SLURM_SUBMIT_DIR"
 
-module load python || true
-module load cuda || true
-
 if [ -d ".venv" ]; then
   source .venv/bin/activate
 fi
