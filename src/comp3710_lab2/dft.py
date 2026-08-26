@@ -53,13 +53,13 @@ def torch_matrix_dft(x, device=None):
 
     if device is None:
         device = x.device
-    x = x.to(device=device, dtype=torch.float32)
+    x = x.to(device=device, dtype=torch.float64)
     n_samples = x.shape[0]
-    n = torch.arange(n_samples, device=device, dtype=torch.float32)
+    n = torch.arange(n_samples, device=device, dtype=torch.float64)
     k = n[:, None]
     angle = -2.0 * math.pi * k * n[None, :] / n_samples
-    matrix = torch.cos(angle).to(torch.complex64) + 1j * torch.sin(angle).to(torch.complex64)
-    return matrix @ x.to(torch.complex64)
+    matrix = torch.cos(angle).to(torch.complex128) + 1j * torch.sin(angle).to(torch.complex128)
+    return matrix @ x.to(torch.complex128)
 
 
 def _time_call(fn, device=None) -> tuple[float, object]:
