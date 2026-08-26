@@ -1,0 +1,20 @@
+.DS_Store
+.venv/
+__pycache__/
+.pycache/
+*.py[cod]
+.ipynb_checkpoints/
+.mplconfig/
+
+# Datasets and model artifacts are too large for GitHub.
+data/
+outputs/
+checkpoints/
+runs/
+*.pt
+*.pth
+*.ckpt
+
+# Cluster logs.
+slurm-*.out
+*.log
