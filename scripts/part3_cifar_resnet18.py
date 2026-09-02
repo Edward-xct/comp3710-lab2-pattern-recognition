@@ -167,6 +167,16 @@ def evaluate(model, loader, device, use_amp: bool):
 
 def main() -> None:
     args = parse_args()
+    if len(sys.argv) == 1:
+        args.fast_dev = True
+        args.synthetic = True
+        args.num_workers = 0
+        args.experiment_name = args.experiment_name or "vscode_smoke_cifar"
+        print(
+            "No command-line arguments detected. Running a quick local synthetic "
+            "smoke demo for VS Code's Run button. Use the Rangpur/SLURM run for "
+            "official CIFAR10 accuracy evidence."
+        )
     set_seed(42)
     if args.fast_dev:
         args.epochs = 1
