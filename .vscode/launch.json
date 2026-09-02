@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Part 1 DFT fast demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/part1_dft.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": ["--fast-dev"]
+    },
+    {
+      "name": "Part 2 Eigenfaces fast demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/part2_eigenfaces.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": ["--fast-dev"]
+    },
+    {
+      "name": "Part 3.1 LFW CNN one epoch",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/part3_lfw_cnn.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": ["--epochs", "1", "--num-workers", "0"]
+    },
+    {
+      "name": "Part 3.2 CIFAR10 one epoch demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/part3_cifar_resnet18.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": [
+        "--download",
+        "--fast-dev",
+        "--experiment-name",
+        "vscode_demo_cifar"
+      ]
+    }
+  ]
+}

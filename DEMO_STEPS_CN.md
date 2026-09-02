@@ -146,6 +146,22 @@ python scripts/part3_cifar_resnet18.py --fast-dev --synthetic
 
 注意：`--synthetic` 只是 smoke test，正式 demo 不能用它声称 CIFAR10 accuracy。
 
+如果想用 VS Code 右上角小三角现场跑 Part 3.2，不要直接打开 `part3_cifar_resnet18.py` 点运行，因为它不会自动带 `--download` 等参数。
+
+最稳的现场 smoke demo 是打开这个文件再点小三角：
+
+```bash
+scripts/vscode_run_part3_cifar_demo.py
+```
+
+这个 wrapper 用 synthetic CIFAR-shaped tensors 跑一轮，只证明训练循环能现场执行，不能用来声称 CIFAR10 accuracy。正式高分仍然展示 Rangpur 完整训练结果。
+
+如果本地已经有完整 CIFAR10 数据，或者现场网络能下载，也可以打开这个真实 CIFAR10 wrapper 再点小三角：
+
+```bash
+scripts/vscode_run_part3_cifar_real_one_epoch.py
+```
+
 ## 5. Part 4 Task 1 - VAE
 
 Rangpur 提交：
