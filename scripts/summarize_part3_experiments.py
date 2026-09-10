@@ -34,6 +34,8 @@ FIELDS = [
 ]
 
 
+# 这个脚本把 Part 3.2 多次 ablation 的 metrics.json 汇总成 CSV/Markdown/PNG。
+# 正式汇报时可以打开 summary 表，按 Stage 1 -> Stage 7 解释每次改动如何提高 accuracy。
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Summarise saved Part 3.2 CIFAR10 experiment metrics."
@@ -49,6 +51,7 @@ def parse_args():
 
 
 def metric_paths(root: Path) -> list[Path]:
+    # 每个 experiment 子目录都会有自己的 metrics.json；这里把 root 和一级子目录都收集起来。
     paths = []
     root_metric = root / METRICS_NAME
     if root_metric.exists():
@@ -58,6 +61,7 @@ def metric_paths(root: Path) -> list[Path]:
 
 
 def sort_key(row: dict):
+    # 优先按 stage_index 排序；没有 stage_index 的旧实验放到后面。
     stage = row.get("stage_index", "")
     try:
         stage_number = int(stage)
@@ -71,6 +75,7 @@ def sort_key(row: dict):
 def load_rows(root: Path, name_prefix: str | None = None) -> list[dict]:
     rows = []
     for path in metric_paths(root):
+        # metrics.json 由 part3_cifar_resnet18.py 保存，包含精度、速度和关键超参数。
         data = json.loads(path.read_text(encoding="utf-8"))
         experiment_name = data.get("experiment_name")
         if not experiment_name or experiment_name == "default":
@@ -99,6 +104,7 @@ def try_write_plot(root: Path, rows: list[dict]) -> Path | None:
     if not labeled_rows:
         return None
 
+    # 折线图用于可视化“baseline -> augmentation -> scheduler -> regularisation -> AMP”的提升过程。
     labels = [str(row["experiment_name"]).replace("_", "\n") for row in labeled_rows]
     values = [float(row["best_accuracy"]) * 100.0 for row in labeled_rows]
     fig, ax = plt.subplots(figsize=(max(10, len(labels) * 1.5), 5.5))
@@ -128,6 +134,7 @@ def write_summary(root: Path, rows: list[dict]) -> tuple[Path, Path, Path | None
     md_path = root / "part3_cifar_experiment_summary.md"
 
     with csv_path.open("w", newline="", encoding="utf-8") as f:
+        # CSV 方便机器读取或重新画图；Markdown 方便直接在 VS Code/GitHub 里展示。
         writer = csv.DictWriter(f, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(rows)
@@ -139,6 +146,7 @@ def write_summary(root: Path, rows: list[dict]) -> tuple[Path, Path, Path | None
         "| ---: | --- | ---: | ---: | ---: | ---: | --- | --- |",
     ]
     for row in rows:
+        # Key Settings 只放最能解释分数变化的超参数，避免汇报表太长。
         settings = (
             f"width={row['width']}, lr={row['learning_rate']}, "
             f"scheduler={row['scheduler']}, aug={row['augmentation']}, "

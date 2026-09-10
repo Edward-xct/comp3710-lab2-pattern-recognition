@@ -2,10 +2,11 @@
 #SBATCH --job-name=comp3710-cifar-ablation
 #SBATCH --account=comp3710
 #SBATCH --partition=comp3710
-#SBATCH --gres=gpu:a100:1
+#SBATCH --gres=gpu
 #SBATCH --cpus-per-task=8
 #SBATCH --time=12:00:00
 #SBATCH --output=slurm-cifar-ablation-%j.out
+#SBATCH --error=slurm-cifar-ablation-%j.err
 
 set -euo pipefail
 

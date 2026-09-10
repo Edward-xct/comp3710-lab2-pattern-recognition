@@ -7,7 +7,7 @@
 - 使用自己实现的 CIFAR10 ResNet-18，不使用 torchvision 预训练模型。
 - 在 Rangpur GPU 上训练并能现场展示 inference 或单个 epoch 的训练过程。
 - 目标是超过 90% accuracy；更高目标是接近或超过 94%，并且训练时间要快。
-- 每轮结果必须来自真实训练日志和保存的 metrics，不能把 `--synthetic` 的 smoke test 当成正式结果。
+- 每轮结果都来自真实 CIFAR10 训练日志和保存的 metrics。
 
 ## 推荐实验路径
 

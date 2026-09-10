@@ -121,4 +121,4 @@ find /home/groups/comp3710 -maxdepth 2 \( -iname "*keras*png*" -o -iname "*oasis
 3. `outputs/*/metrics.json` 展示准确率、DSC、训练时间。
 4. `checkpoints/*/*.pt` 展示模型权重。
 5. 用 `--eval-only --checkpoint ...` 跑 inference。
-6. 用 `--fast-dev` 或小 epoch 跑一轮训练，证明代码能训练。
+6. 展示已经保存的完整训练日志、每轮 history、最终 metrics 和 checkpoint，说明代码确实完成了训练。

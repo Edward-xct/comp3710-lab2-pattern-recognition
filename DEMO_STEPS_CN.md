@@ -27,12 +27,6 @@ Rangpur GPU 主要用于：
 python scripts/part1_dft.py
 ```
 
-快速检查：
-
-```bash
-python scripts/part1_dft.py --fast-dev
-```
-
 展示文件：
 
 - `outputs/part1_dft/part1_square_wave_harmonics.png`
@@ -136,31 +130,8 @@ python scripts/part3_cifar_resnet18.py --download --experiment-name final_amp_ch
 2. Residual block 用 shortcut 缓解深层网络的梯度传播问题。
 3. CIFAR10 用 random crop、horizontal flip、random erasing 做 augmentation。
 4. `--amp` 使用 mixed precision，A100/V100 上会更快。
-5. Demo 时可以用 checkpoint 做 inference，也可以用 `--fast-dev` 或少量 epoch 现场跑一轮训练。
-
-本地没有 CIFAR10 时，可以只检查训练循环：
-
-```bash
-python scripts/part3_cifar_resnet18.py --fast-dev --synthetic
-```
-
-注意：`--synthetic` 只是 smoke test，正式 demo 不能用它声称 CIFAR10 accuracy。
-
-如果想用 VS Code 右上角小三角现场跑 Part 3.2，不要直接打开 `part3_cifar_resnet18.py` 点运行，因为它不会自动带 `--download` 等参数。
-
-最稳的现场 smoke demo 是打开这个文件再点小三角：
-
-```bash
-scripts/vscode_run_part3_cifar_demo.py
-```
-
-这个 wrapper 用 synthetic CIFAR-shaped tensors 跑一轮，只证明训练循环能现场执行，不能用来声称 CIFAR10 accuracy。正式高分仍然展示 Rangpur 完整训练结果。
-
-如果本地已经有完整 CIFAR10 数据，或者现场网络能下载，也可以打开这个真实 CIFAR10 wrapper 再点小三角：
-
-```bash
-scripts/vscode_run_part3_cifar_real_one_epoch.py
-```
+5. Demo 时展示 Rangpur 的完整训练日志、逐阶段实验 summary、history CSV、metrics JSON 和 best checkpoint。
+6. 说明正式运行通过 `sbatch` 提交，日志中的每个 epoch 都记录 train/test loss、accuracy 和训练时间。
 
 ## 5. Part 4 Task 1 - VAE
 
@@ -168,12 +139,6 @@ Rangpur 提交：
 
 ```bash
 sbatch slurm/part4_vae.sbatch
-```
-
-本地小检查：
-
-```bash
-python scripts/part4_vae.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
 ```
 
 展示文件：
@@ -198,12 +163,6 @@ Rangpur 提交：
 sbatch slurm/part4_unet.sbatch
 ```
 
-本地小检查：
-
-```bash
-python scripts/part4_unet.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
-```
-
 展示文件：
 
 - `outputs/part4_unet/part4_unet_examples.png`
@@ -226,12 +185,6 @@ Rangpur 提交：
 
 ```bash
 sbatch slurm/part4_gan.sbatch
-```
-
-本地小检查：
-
-```bash
-python scripts/part4_gan.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
 ```
 
 展示文件：

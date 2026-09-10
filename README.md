@@ -92,32 +92,15 @@ python scripts/visualize_oasis_sample.py --data /Users/xct/Downloads/keras_png_s
 
 Do not commit the dataset or trained checkpoints to GitHub.
 
-## Local Fast Checks
+## Validation and saved evidence
 
-These checks confirm that the code imports, the OASIS zip can be read, and all model forward passes work:
+This check confirms that the code imports, the OASIS zip can be read, and all model forward passes work:
 
 ```bash
 python scripts/smoke_tests.py
-python scripts/part3_cifar_resnet18.py --fast-dev --synthetic
-python scripts/part1_dft.py --fast-dev
-python scripts/part4_vae.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
-python scripts/part4_unet.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
-python scripts/part4_gan.py --data /Users/xct/Downloads/keras_png_slices_data.zip --fast-dev
 ```
 
-`--synthetic` uses random CIFAR-shaped tensors only to test the training loop. Do not use it as evidence of CIFAR10 accuracy.
-
-Or run the local fast-dev bundle:
-
-```bash
-bash scripts/run_all_fast_dev.sh
-```
-
-Without activating a venv, pass the Python path explicitly:
-
-```bash
-PYTHON_BIN="../comp3710_lab1_demo/.venv/bin/python" bash scripts/run_all_fast_dev.sh
-```
+Every Part 1-4 entry script writes a timestamped console log under its output directory. Training tasks also save per-epoch CSV history and final JSON metrics containing loss, accuracy or Dice where applicable, device information, and elapsed time.
 
 ## Full Runs
 
