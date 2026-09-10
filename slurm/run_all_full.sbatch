@@ -10,7 +10,6 @@
 
 set -euo pipefail
 
-# 必须从项目根目录提交：sbatch slurm/run_all_full.sbatch
 cd "$SLURM_SUBMIT_DIR"
 
 if [ ! -f ".venv/bin/activate" ]; then
@@ -19,7 +18,6 @@ if [ ! -f ".venv/bin/activate" ]; then
 fi
 source .venv/bin/activate
 
-# 让 Python 的每一行训练信息立即写入 Slurm 日志，便于实时查看。
 export PYTHONUNBUFFERED=1
 
 OASIS_DATA="/home/groups/comp3710/OASIS"
@@ -28,7 +26,6 @@ if [ ! -d "$OASIS_DATA" ]; then
   exit 1
 fi
 
-# 重新训练会更新固定名称的 Part 4 输出，先完整保留当前成功结果。
 ARCHIVE_DIR="archives/pre_full_run_${SLURM_JOB_ID}"
 mkdir -p "$ARCHIVE_DIR"
 if [ -d "outputs" ]; then
