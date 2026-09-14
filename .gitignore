@@ -18,3 +18,12 @@ runs/
 # Cluster logs.
 slurm-*.out
 *.log
+
+# Local Chinese study/demo notes are kept off the public submission repository.
+docs/ASSIGNMENT_COMPLETION_AUDIT_CN.md
+docs/CODE_EXPLANATION_CN.md
+docs/DEMO_QA_CN.md
+docs/GITHUB_PUSH_CN.md
+docs/PART3_ABLATION_DEMO_CN.md
+docs/PART3_CIFAR_EXPERIMENT_PROCESS_CN.md
+docs/RANGPUR_GPU_QUEUE_CN.md
